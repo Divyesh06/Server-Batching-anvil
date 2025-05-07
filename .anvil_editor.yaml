@@ -3,6 +3,9 @@ unique_ids:
     standard-page.html: V4OZXG33MQHFHJHVON426UIZIF56WCS7
     theme.css: SVAASSEOTSLBVQGY4RYL24SHOGMGR7DD
   forms: {}
-  modules: {}
+  modules:
+    BatchTest: '1746613048589614744904380.6184'
+    Server_Batching: '1746611740645303904735927.375'
   scripts: {}
-  server_modules: {}
+  server_modules:
+    ServerModule1: '1746611792421126180996808.38934'
