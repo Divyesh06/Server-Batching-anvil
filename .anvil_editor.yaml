@@ -2,9 +2,11 @@ unique_ids:
   assets:
     standard-page.html: V4OZXG33MQHFHJHVON426UIZIF56WCS7
     theme.css: SVAASSEOTSLBVQGY4RYL24SHOGMGR7DD
-  forms: {}
+  forms:
+    Form1: '1746676760370820795588561.2506'
+    Form2: '1746676769647320897686869.59985'
+    Form3: '1746676817043425404333520.5382'
   modules:
-    BatchTest: '1746613048589614744904380.6184'
     Server_Batching: '1746611740645303904735927.375'
   scripts: {}
   server_modules:

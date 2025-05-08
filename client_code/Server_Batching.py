@@ -1,5 +1,7 @@
 import anvil.server
 
+global_batch = None
+
 class QueuedServerCall:
     def __init__(self):
         self.value = None
@@ -36,3 +38,12 @@ class BatchServerCall:
             return_data = return_datas[index]
             queued_call.value = return_data
             queued_call.raise_completed_callback()
+
+def start_global_batching():
+    global global_batch
+    global_batch = BatchServerCall()
+    global_batch.__enter__()
+
+def execute_global_batch():
+    global_batch.__exit__()
+    
