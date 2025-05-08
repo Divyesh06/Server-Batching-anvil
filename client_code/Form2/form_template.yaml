@@ -1,5 +1,0 @@
-components: []
-container:
-  event_bindings: {show: form_show}
-  type: ColumnPanel
-is_package: true

@@ -1,6 +1,6 @@
 allow_embedding: false
-name: Custom HTML 8
-package_name: Custom_HTML_8
+name: Server_Batching
+package_name: Server_Batching
 runtime_options:
   client_version: '3'
   server_spec: {base: python310-minimal}
@@ -10,5 +10,5 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/tables.yml
-startup: {module: Form1, type: form}
+startup: {module: Server_Batching, type: module}
 startup_form: null
