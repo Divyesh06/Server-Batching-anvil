@@ -39,6 +39,8 @@ class BatchServerCall:
             queued_call.value = return_data
             queued_call.raise_completed_callback()
 
+        anvil.server.call = self._original_server_call
+
 def start_global_batching():
     global global_batch
     global_batch = BatchServerCall()
@@ -46,4 +48,3 @@ def start_global_batching():
 
 def execute_global_batch():
     global_batch.__exit__()
-    

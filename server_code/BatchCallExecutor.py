@@ -15,16 +15,3 @@ def batch_call_executor(server_call_data):
         return_datas.append(callable(*server_call['args'], **server_call['kwargs']))
 
     return return_datas
-
-
-@anvil.server.callable
-def test1():
-    return "test 1 done"
-    
-@anvil.server.callable
-def test2():
-    return None
-    
-@anvil.server.callable
-def test3():
-    return "test 3 done"
