@@ -32,7 +32,7 @@ class BatchServerCall:
 
     def __exit__(self, *args, **kwargs):
         
-        return_datas = self._original_server_call('batch_call_executor', self.queued_server_calls_data)
+        return_datas = self._original_server_call('Server_Batching.batch_call_executor', self.queued_server_calls_data)
 
         for index, queued_call in enumerate(self.queued_server_calls_ref):
             return_data = return_datas[index]
