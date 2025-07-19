@@ -1,88 +1,67 @@
-# About This [Anvil](https://anvil.works/?utm_source=github:app_README) App
+# Server Batching for Anvil
 
-### Build web apps with nothing but Python.
+Created a simple package that allows batching of Server Calls. If you want to avoid multiple server calls in your app but also avoid writing a single complicated server function, this package will do the job for you.
 
-The app in this repository is built with [Anvil](https://anvil.works?utm_source=github:app_README), the framework for building web apps with nothing but Python. You can clone this app into your own Anvil account to use and modify.
+## Clone Link
 
-Below, you will find:
-- [How to open this app](#opening-this-app-in-anvil-and-getting-it-online) in Anvil and deploy it online
-- Information [about Anvil](#about-anvil)
-- And links to some handy [documentation and tutorials](#tutorials-and-documentation)
+https://anvil.works/build#clone:VKSHYAFNFY34XEBI=XDUVUJZKC33A54YGDRMOHULL
 
-## Opening this app in Anvil and getting it online
+## Usage
+There are three ways of using it
 
-### Cloning the app
+### 1 - ‘with’ block with .value
 
-Go to the [Anvil Editor](https://anvil.works/build?utm_source=github:app_README) (you might need to sign up for a free account) and click on “Clone from GitHub” (underneath the “Blank App” option):
+```python
+import anvil.server
+from Server_Batching import Server_Batching
 
-<img src="https://anvil.works/docs/version-control/img/git/clone-from-github.png" alt="Clone from GitHub"/>
+with Server_Batching.BatchServerCall(): 
+    call_1 = anvil.server.call('test1') #Use server calls normally
+    call_2 = anvil.server.call('test2') 
 
-Enter the URL of this GitHub repository. If you're not yet logged in, choose "GitHub credentials" as the authentication method and click "Connect to GitHub".
+print(call_1.value) #The return value of the server call is accessible from .value
+print(call_2.value)
+```
+In this example, a single call will execute both `test_1` and `test_2`. The value for test1 and test2 can be accessed at .value after the with block. If you try to access .value inside the with block itself, it will return None
 
-<img src="https://anvil.works/docs/version-control/img/git/clone-app-from-git.png" alt="Clone App from Git modal"/>
+## 2. ‘with’ block with callback
 
-Finally, click "Clone App".
+```python
+import anvil.server
+from Server_Batching import Server_Batching
 
-This app will then be in your Anvil account, ready for you to run it or start editing it! **Any changes you make will be automatically pushed back to this repository, if you have permission!** You might want to [make a new branch](https://anvil.works/docs/version-control?utm_source=github:app_README).
+def handle_test_1(value):
+   print(value)
 
-### Running the app yourself:
+def handle_test_2(value):
+   print(value)
 
-Find the **Run** button at the top-right of the Anvil editor:
+with Server_Batching.BatchServerCall():  
+    
+    anvil.server.call('test1').on_complete(handle_test_1)
+    anvil.server.call('test2').on_complete(handle_test_2)
+```
 
-<img src="https://anvil.works/docs/img/run-button-new-ide.png"/>
+### 3. Global Batching with on_complete
 
+For more complex app structures, you can use a global batching system. This gives you complete control over when to start batching and when to execute those batch. Useful if you are embedding multiple forms that may have calls of their own.
 
-### Publishing the app on your own URL
+For example (Assuming that SubForm1 and SubForm2 have their own server calls in form_show)
 
-Now you've cloned the app, you can [deploy it on the internet with two clicks](https://anvil.works/docs/deployment/quickstart?utm_source=github:app_README)! Find the **Publish** button at the top-right of the editor:
+```python
 
-<img src="https://anvil.works/docs/deployment/img/environments/publish-button.png"/>
+from ._anvil_designer import Form1Template
+from Server_Batching import Server_Batching
 
-When you click it, you will see the Publish dialog:
+class Form1(Form1Template):
+    def __init__(self, **properties):
+        self.init_components(**properties)
+        Server_Batching.start_global_batching()
 
-<img src="https://anvil.works/docs/deployment/img/quickstart/empty-environments-dialog.png"/>
+        self.add_component(SubForm1())
+        self.add_component(SubForm2())
 
-Click **Publish This App**, and you will see that your app has been deployed at a new, public URL:
-
-<img src="https://anvil.works/docs/deployment/img/quickstart/default-public-environment.png"/>
-
-That's it - **your app is now online**. Click the link and try it!
-
-## About Anvil
-
-If you’re new to Anvil, welcome! Anvil is a platform for building full-stack web apps with nothing but Python. No need to wrestle with JS, HTML, CSS, Python, SQL and all their frameworks – just build it all in Python.
-
-<figure>
-<figcaption><h3>Learn About Anvil In 80 Seconds👇</h3></figcaption>
-<a href="https://www.youtube.com/watch?v=3V-3g1mQ5GY" target="_blank">
-<img
-  src="https://anvil-website-static.s3.eu-west-2.amazonaws.com/anvil-in-80-seconds-YouTube.png"
-  alt="Anvil In 80 Seconds"
-/>
-</a>
-</figure>
-<br><br>
-
-[![Try Anvil Free](https://anvil-website-static.s3.eu-west-2.amazonaws.com/mark-complete.png)](https://anvil.works?utm_source=github:app_README)
-
-To learn more about Anvil, visit [https://anvil.works](https://anvil.works?utm_source=github:app_README).
-
-## Tutorials and documentation
-
-### Tutorials
-
-If you are just starting out with Anvil, why not **[try the 10-minute Feedback Form tutorial](https://anvil.works/learn/tutorials/feedback-form?utm_source=github:app_README)**? It features step-by-step tutorials that will introduce you to the most important parts of Anvil.
-
-Anvil has tutorials on:
-- [Building Dashboards](https://anvil.works/learn/tutorials/data-science#dashboarding?utm_source=github:app_README)
-- [Multi-User Applications](https://anvil.works/learn/tutorials/multi-user-apps?utm_source=github:app_README)
-- [Building Web Apps with an External Database](https://anvil.works/learn/tutorials/external-database?utm_source=github:app_README)
-- [Deploying Machine Learning Models](https://anvil.works/learn/tutorials/deploy-machine-learning-model?utm_source=github:app_README)
-- [Taking Payments with Stripe](https://anvil.works/learn/tutorials/stripe?utm_source=github:app_README)
-- And [much more....](https://anvil.works/learn/tutorials?utm_source=github:app_README)
-
-### Reference Documentation
-
-The Anvil reference documentation provides comprehensive information on how to use Anvil to build web applications. You can find the documentation [here](https://anvil.works/docs/overview?utm_source=github:app_README).
-
-If you want to get to the basics as quickly as possible, each section of this documentation features a [Quick-Start Guide](https://anvil.works/docs/overview/quickstarts?utm_source=github:app_README).
+    def form_show(self, **event_args):
+        Server_Batching.execute_global_batch()
+```
+Unless you call the execute_global_batch, any server calls happening anywhere on the app (after start_global_batch) will be queued. With global batching, it is usually best to use the on_complete callback.
